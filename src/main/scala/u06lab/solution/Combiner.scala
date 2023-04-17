@@ -13,8 +13,8 @@ object FunctionsImpl extends Functions:
   override def concat(a: Seq[String]): String = combine(a)
   override def max(a: List[Int]): Int = combine(a)
 
-  def combine[A](a: Iterable[A])(using c: Combiner[A]): A =
-    a.foldLeft(c.unit)(c.combine)
+  def combine[A: Combiner](a: Iterable[A]): A =
+    a.foldLeft(summon[Combiner[A]].unit)(summon[Combiner[A]].combine)
 
 /*
  * 2) To apply DRY principle at the best,
